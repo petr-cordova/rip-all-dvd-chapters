@@ -21,3 +21,15 @@ Script assumes, that HandBrakeCLI is on the system PATH or in the current folder
 
 Script tested on Windows 7 and 10.  
 To run on Mac / Linux - modify to use correct path & devices on your system
+
+# Notes
+I wrote and used this script to rip A Beka DVDs.
+
+Is it legal?
+It's not legal to copy DVDs for the purpose of redistribution.
+However, as far as I can see - it's legal for the purpose of "fair use":
+
+In the 2009 case [RealNetworks v. DVD CCA](https://www.eff.org/cases/realnetworks-v-dvd-cca-realdvd-case), the [final injunction](https://www.eff.org/files/filenode/RealDVD/real_v_dvd-cca_pi_order_081109.pdf) reads, "while it may well be fair use for an individual consumer to store a backup copy of a personally owned DVD on that individual's computer, a federal law has nonetheless made it illegal to manufacture or traffic in a device or tool that permits a consumer to make such copies."
+This case made clear that manufacturing and distribution of circumvention tools was illegal, but use of those tools for non-infringing purposes, including fair use purposes, was not.
+
+Use on your own risk.
