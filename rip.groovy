@@ -22,13 +22,22 @@ process.waitFor()
 logFile.write "$startTime\n$out\n"
 logFile << err
 
-def json = out.toString()
+String json = out.toString()
 String marker = 'JSON Title Set:'
-json = json.substring(json.indexOf(marker) + marker.length())
+int markerPosition = json.indexOf(marker)
+if (markerPosition == -1) {
+    println "\nCan`t read DVD`s data. Is it inserted in the drive $ripFrom?\n"
+    println err
+    return 1
+}
+json = json.substring(markerPosition + marker.length())
 Map dvd_data = new JsonSlurper().parseText(json)
 
 def name = dvd_data.TitleList.Name[0].toString()
 println "${LocalTime.now()} DVD Name: $name"
+// possible renaming:
+// name = name.replace('03 L ', '3 Day ')
+// println "Will save to $name"
 new File("$saveTo$name").mkdir()
 
 def chapterList = dvd_data.TitleList.ChapterList[0]
@@ -39,7 +48,7 @@ for (int i=0; i<chaptersCount; i++) {
                    chapterList[i].Duration.Seconds
     print "${LocalTime.now()} ${chapterList[i].Name} out of ${chaptersCount}: $duration seconds... "
 
-    if (duration < 3) {
+    if (duration < 4) {
         println 'skipping'
     } else {
         String cmd = "HandBrakeCLI -i $ripFrom -t 1 --chapters ${i+1} --output \"$saveTo$name\\${chapterList[i].Name}.mp4\""
@@ -54,7 +63,11 @@ for (int i=0; i<chaptersCount; i++) {
         logFile << err
     }
 }
-String done = "\n${LocalTime.now()} Completed ripping in ${ChronoUnit.MINUTES.between(startTime, LocalTime.now())} minutes\n"
+int duration = ChronoUnit.MINUTES.between(startTime, LocalTime.now())
+if (duration < 0) {
+   duration = 1440 + duration
+}
+String done = "\n${LocalTime.now()} Completed ripping in $duration minutes\n"
 print done
 logFile << done
 
